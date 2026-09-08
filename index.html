@@ -11,7 +11,7 @@
     --border: #2c303a;
     --text: #e6e8eb;
     --muted: #8b909c;
-    --accent: #5eead4;
+    --accent: #8fb8a8;
   }
   * { box-sizing: border-box; }
   body {
@@ -91,6 +91,20 @@
     color: var(--muted);
     line-height: 1.6;
   }
+  .links {
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+    font-size: 12px;
+  }
+  .links a {
+    color: var(--accent);
+    text-decoration: none;
+    margin-right: 16px;
+  }
+  .links a:hover {
+    text-decoration: underline;
+  }
 </style>
 </head>
 <body>
@@ -118,6 +132,11 @@
     Space is shown as a literal space character in the output.<br>
     Newlines/tabs are counted but shown as escaped \n \t so the output stays one line.
   </footer>
+
+  <div class="links">
+    <a href="https://github.com/heyrtl/ucp/blob/main/LICENSE" target="_blank">MIT License</a>
+    <a href="https://github.com/heyrtl/ucp/" target="_blank">Star on GitHub</a>
+  </div>
 </main>
 
 <script>

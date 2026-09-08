@@ -19,3 +19,7 @@ digits, and symbols are all included.
 4. Your tool will be live at `https://<your-username>.github.io/<repo-name>/`.
 
 That's it — no build step, no dependencies.
+
+## License
+
+MIT
