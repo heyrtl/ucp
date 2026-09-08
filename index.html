@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UCP — Unique Character Parser</title>
+<style>
+  :root {
+    --bg: #14161a;
+    --panel: #1c1f25;
+    --border: #2c303a;
+    --text: #e6e8eb;
+    --muted: #8b909c;
+    --accent: #5eead4;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 40px 20px;
+    background: var(--bg);
+    color: var(--text);
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    display: flex;
+    justify-content: center;
+  }
+  main {
+    width: 100%;
+    max-width: 680px;
+  }
+  h1 {
+    font-size: 20px;
+    margin: 0 0 4px 0;
+    letter-spacing: 0.5px;
+  }
+  p.sub {
+    color: var(--muted);
+    font-size: 13px;
+    margin: 0 0 28px 0;
+    line-height: 1.5;
+  }
+  label {
+    display: block;
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+  textarea {
+    width: 100%;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    color: var(--text);
+    border-radius: 6px;
+    padding: 12px;
+    font-family: inherit;
+    font-size: 13px;
+    resize: vertical;
+  }
+  #input { height: 160px; }
+  #output { height: 100px; }
+  button {
+    margin: 14px 0;
+    background: var(--accent);
+    color: #08201c;
+    border: none;
+    border-radius: 6px;
+    padding: 10px 18px;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  button:hover { opacity: 0.9; }
+  button.secondary {
+    background: transparent;
+    color: var(--accent);
+    border: 1px solid var(--border);
+  }
+  .row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 28px;
+  }
+  .count {
+    font-size: 12px;
+    color: var(--muted);
+  }
+  footer {
+    margin-top: 30px;
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+</style>
+</head>
+<body>
+<main>
+  <h1>UCP — Unique Character Parser</h1>
+  <p class="sub">
+    Paste text below, click Parse, get every unique character used in it —
+    letters (upper/lowercase treated as different), digits, spaces, symbols,
+    all of it. Copy the result with one click.
+  </p>
+
+  <label for="input">1. Paste your text</label>
+  <textarea id="input" placeholder="Paste text here..."></textarea>
+
+  <button id="parseBtn">Parse</button>
+
+  <div class="row">
+    <label for="output" style="margin:0;">2. Unique characters</label>
+    <span class="count" id="count"></span>
+  </div>
+  <textarea id="output" readonly placeholder="Result will appear here..."></textarea>
+  <button class="secondary" id="copyBtn">Copy</button>
+
+  <footer>
+    Space is shown as a literal space character in the output.<br>
+    Newlines/tabs are counted but shown as escaped \n \t so the output stays one line.
+  </footer>
+</main>
+
+<script>
+  const input = document.getElementById('input');
+  const output = document.getElementById('output');
+  const count = document.getElementById('count');
+  const parseBtn = document.getElementById('parseBtn');
+  const copyBtn = document.getElementById('copyBtn');
+
+  parseBtn.addEventListener('click', () => {
+    const text = input.value;
+    const seen = new Set();
+    const result = [];
+
+    for (const ch of text) {
+      if (!seen.has(ch)) {
+        seen.add(ch);
+        if (ch === '\n') result.push('\\n');
+        else if (ch === '\t') result.push('\\t');
+        else if (ch === '\r') result.push('\\r');
+        else result.push(ch);
+      }
+    }
+
+    output.value = result.join('');
+    count.textContent = seen.size + ' unique character' + (seen.size === 1 ? '' : 's');
+  });
+
+  copyBtn.addEventListener('click', () => {
+    if (!output.value) return;
+    navigator.clipboard.writeText(output.value).then(() => {
+      const original = copyBtn.textContent;
+      copyBtn.textContent = 'Copied';
+      setTimeout(() => (copyBtn.textContent = original), 1200);
+    });
+  });
+</script>
+</body>
+</html>
